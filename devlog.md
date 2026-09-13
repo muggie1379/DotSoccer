@@ -33,3 +33,16 @@
   콘솔 에러 없이 동작했다. 인스펙터에서 씬 오브젝트 참조를 직접 연결하는 게
   mcp-unity 툴로는 안 돼서, `MatchController.Start()`에 같은 GameObject의
   `GridView`를 자동으로 찾는 폴백을 추가해 우회했다.
+- 저장소를 GitHub([muggie1379/DotSoccer](https://github.com/muggie1379/DotSoccer),
+  Public)에 연결했다. GitHub CLI(`gh`)를 설치하고 로그인한 뒤 `gh repo create
+  --push`로 저장소를 만들고 지금까지의 커밋을 올렸다.
+- 작업하다 커밋을 깜빡하고 놓치는 걸 막기 위해, 변경사항이 있을 때만
+  add/commit/push하는 스크립트(`tools/git-auto-commit.ps1`)를 만들고 Windows
+  작업 스케줄러에 1시간 주기 작업(`DotSoccer-AutoCommit`)으로 등록했다. 첫
+  등록 시도는 반복 기간을 `[TimeSpan]::MaxValue`로 줬다가
+  "Duration:P99999999DT23H59M59S" 에러로 실패했다 -- 작업 스케줄러 XML이 받는
+  기간 범위를 넘어선 값이었다. 10년(`New-TimeSpan -Days 3650`)으로 바꾸니
+  정상 등록됐다.
+
+<!-- published 2026-09-13 to velog DevLog #1 -->
+
