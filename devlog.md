@@ -21,7 +21,24 @@
 
 - 기존에 로컬에서 동작하던 DotSoccer 게임 로직을, 서버 연동을 염두에 둔 구조
   (GameConfig/MatchState/TurnResolver/GridView/MatchController)로 새 Unity
-  프로젝트에 적용했다.
+  프로젝트에 적용했다. 각 스크립트의 역할은 다음과 같다.
+  - `GameConfig` -- 그리드 크기, 골대 범위, 스폰 위치 같은 순수 데이터. 시뮬레이션과
+    화면 렌더링 양쪽에서 공유한다.
+  - `MatchState` -- 두 플레이어 위치, 공 소유자, 점수, 전후반 상태 등 순수 게임
+    상태. Unity 컴포넌트 참조가 없다.
+  - `TurnResolver` -- 매 턴 두 플레이어의 방향 입력을 받아 이동/스틸/득점을
+    계산하는 정적(static) 순수 함수.
+  - `DirectionalInputAccumulator` -- 턴 동안 눌려있던 방향키를 모아, 짧게
+    누르거나 턴 직전에 뗀 입력도 놓치지 않게 처리한다.
+  - `GridView` -- 그리드 선/골대 마커를 그리고, `MatchState`가 주는 좌표대로
+    스프라이트 위치만 갱신하는 순수 뷰.
+  - `MatchController` -- 위 조각들을 모두 들고, 카운트다운→전반→하프타임→
+    후반→킥오프→종료로 이어지는 턴제 경기 진행을 담당하는 MonoBehaviour.
+
+  핵심은 `GameConfig`/`MatchState`/`TurnResolver`가 Unity MonoBehaviour나 화면
+  오브젝트를 전혀 참조하지 않는 순수 데이터/로직이라는 점이다. 서버로 옮길 때
+  이 세 개는 그대로(또는 C++로 번역만 해서) 서버가 가져가면 되고, 클라이언트에는
+  입력을 보내고 받은 상태를 그리는 역할만 남도록 처음부터 설계했다.
 - Unity 에디터 제어용 MCP 서버로 `mcp-unity`(CoderGamester, ⭐1.9k, 커뮤니티
   프로젝트)를 붙였다. 처음엔 프로젝트에 남아있던 6월 빌드 스탠드얼론 서버와
   패키지 안에 새로 들어온 서버 버전이 안 맞아 연결이 안 됐는데, `.mcp.json`이
