@@ -61,18 +61,21 @@
 - "Skill" 소개 게시글(Workflow 시리즈)에 최신 SKILL.md 전문을 반영하고, 버전
   이력을 velog 게시글 수정만으로 남기기 어려워서 Skill 파일 자체를 GitHub
   저장소로도 버전 관리하기 시작했다.
-- Skill 이름을 `velog-weekly-devlog`에서 `velog-for-claude`로 바꿨다 -- 더 이상
-  "매주"도 아니고 devlog 발행 외에 History/Skill 소개 글 관리까지 범위가
-  넓어져서 이름이 실제 역할을 설명하지 못하게 됐다. 폴더명, SKILL.md
-  frontmatter, GitHub 저장소명까지는 바꿨는데, Claude 앱이 내부적으로 갖고
-  있는 스킬 등록 정보(manifest.json)는 손으로 고쳐도 앱이 자체적으로
-  재동기화하면서 옛 이름으로 되돌려버리는 문제를 발견했다 -- 심지어 한 번은
-  폴더 자체가 `velog-weekly-devlog`로 복원되면서 SKILL.md 수정 내용이 전부
-  유실되는 사고로 이어졌다. GitHub 저장소 커밋 이력에서 복구했고, 이 사고
-  이후로는 "폴더/앱 등록 정보는 손대지 말고, 내용 편집 후에는 매번 GitHub에
-  커밋/푸시해서 정본을 지킨다"는 원칙을 세웠다. 이후 사용자가 폴더명을 직접
-  `velog-for-claude`로 다시 바꿔서 지금은 폴더명도 맞는 상태다. 앱 차원에서
-  스킬을 진짜로 재등록하는 방법은 아직 못 찾았다.
+- Skill 이름을 `velog-weekly-devlog`에서 바꾸려고 시도하다가 한참 헤맸다. 더
+  이상 "매주"도 아니고 devlog 발행 외에 History/Skill 소개 글 관리까지 범위가
+  넓어져서 이름을 바꿔야 했는데, 처음 정한 `velog-for-claude`로 폴더명/
+  frontmatter/GitHub 저장소명을 다 바꿔도 Claude 앱이 계속 원래 이름으로
+  되돌리는 사고가 반복됐다 (한 번은 폴더가 통째로 `velog-weekly-devlog`
+  원본으로 복원되면서 SKILL.md 수정 내용이 전부 날아가기도 했다 -- GitHub
+  저장소 커밋 이력에서 복구함). 나중에야 진짜 원인을 알았다: **Claude 앱은
+  스킬 이름에 "claude"라는 단어가 들어가면 업로드 자체를 거부한다**
+  ("Skill name in SKILL.md cannot contain the reserved word 'claude'").
+  `velog-for-claude`라는 이름 자체가 처음부터 유효하지 않았던 것 -- 폴더/
+  파일을 아무리 손으로 고쳐도 앱이 자기 등록 정보와 재동기화하며 계속
+  되돌린 게 당연했다. 최종적으로 `velog-publisher`로 바꿔서 해결했고,
+  skill-creator의 `package_skill.py`로 `.skill` 파일을 만들어 사용자가
+  앱의 스킬 업로드 화면에서 직접 저장하는 방식으로 정식 재등록했다 (폴더/
+  manifest.json을 직접 고치는 건 반영이 안 된다는 것도 이번에 확인함).
 - velog는 마크다운에 넣은 `<details><summary>...</summary></details>` 접이식
   토글을 에디터 미리보기에서는 그럴듯하게 보여주지만, 실제 발행된 페이지는 그
   태그들을 렌더링 시 제거해버린다는 것을 발견했다 (안의 텍스트만 평범한
