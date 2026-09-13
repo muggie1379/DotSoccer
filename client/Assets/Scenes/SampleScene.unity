@@ -415,8 +415,8 @@ MonoBehaviour:
     GridWidth: 19
     GridHeight: 11
     GoalZoneSize: 5
-    Player1Spawn: {x: 0, y: 5}
-    Player2Spawn: {x: 18, y: 5}
+    Player1Spawn: {x: 3, y: 5}
+    Player2Spawn: {x: 15, y: 5}
   view: {fileID: 0}
   turnInterval: 1
   halfDuration: 30
