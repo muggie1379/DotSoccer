@@ -351,6 +351,8 @@ GameObject:
   - component: {fileID: 1849337529}
   - component: {fileID: 1849337528}
   - component: {fileID: 1849337530}
+  - component: {fileID: 1849337532}
+  - component: {fileID: 1849337531}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -370,13 +372,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40e41ecf2ce2fac46ba7b019579a67f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridWidth: 19
-  gridHeight: 11
-  cellSize: 1
-  player1Spawn: {x: 3, y: 5}
-  player2Spawn: {x: 15, y: 5}
-  currentHalf: 1
-  goalZoneSize: 5
 --- !u!4 &1849337529
 Transform:
   m_ObjectHideFlags: 0
@@ -404,14 +399,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 461b70f50483c8544908b546243afd9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnInterval: 0.5
+--- !u!114 &1849337531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849337527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64d6806a501a7f045bbbcf38c5f49473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config:
+    GridWidth: 19
+    GridHeight: 11
+    GoalZoneSize: 5
+    Player1Spawn: {x: 0, y: 5}
+    Player2Spawn: {x: 18, y: 5}
+  view: {fileID: 0}
+  turnInterval: 1
   halfDuration: 30
   countdownDuration: 3
   bannerDuration: 1.5
-  score1: 0
-  score2: 0
-  showOpponentInput: 0
   releaseTolerance: 0.2
+  showOpponentInput: 0
+--- !u!114 &1849337532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849337527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aceae4bf6681ba49b63b3d337505e99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Config:
+    GridWidth: 19
+    GridHeight: 11
+    GoalZoneSize: 5
+    Player1Spawn: {x: 0, y: 5}
+    Player2Spawn: {x: 18, y: 5}
+  CellSize: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -71,6 +71,8 @@ namespace DotSoccer
 
         void Start()
         {
+            if (view == null) view = GetComponent<GridView>();
+
             state.Player1Pos = config.Player1Spawn;
             state.Player2Pos = config.Player2Spawn;
             state.BallOwner = state.CurrentHalf == 1 ? 1 : 2;
