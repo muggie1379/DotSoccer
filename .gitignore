@@ -1,0 +1,42 @@
+# ---- Unity (client/) ----
+client/Library/
+client/Temp/
+client/Obj/
+client/Build/
+client/Builds/
+client/Logs/
+client/UserSettings/
+client/MemoryCaptures/
+client/[Rr]ecordings/
+client/.vs/
+client/*.csproj
+client/*.sln
+client/*.suo
+client/*.user
+client/*.userprefs
+client/*.pidb
+client/*.booproj
+client/*.svd
+client/*.pdb
+client/*.mdb
+client/*.opendb
+client/*.VC.db
+client/sysinfo.txt
+client/crashlytics-build.properties
+
+# Unity crash logs
+client/*.stackdump
+
+# ---- C++ server ----
+server/build/
+server/cmake-build-*/
+*.o
+*.obj
+*.exe
+*.out
+
+# ---- Editors / OS ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
