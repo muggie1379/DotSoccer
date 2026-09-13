@@ -19,6 +19,9 @@
 
 ### 클라이언트
 
+- 기존에 로컬에서 동작하던 DotSoccer 게임 로직을, 서버 연동을 염두에 둔 구조
+  (GameConfig/MatchState/TurnResolver/GridView/MatchController)로 새 Unity
+  프로젝트에 적용했다.
 - Unity 에디터 제어용 MCP 서버로 `mcp-unity`(CoderGamester, ⭐1.9k, 커뮤니티
   프로젝트)를 붙였다. 처음엔 프로젝트에 남아있던 6월 빌드 스탠드얼론 서버와
   패키지 안에 새로 들어온 서버 버전이 안 맞아 연결이 안 됐는데, `.mcp.json`이
@@ -32,14 +35,18 @@
   동시에 켜면 같은 Unity 에디터에 서로 다른 브리지가 붙으려 해서 충돌 위험이
   있으므로 병행 사용은 하지 않는다. 공식 플러그인이 프리뷰 딱지를 떼고
   커뮤니티 피드백이 쌓이면 다시 검토한다.
-- mcp-unity를 통해 `DotSoccer` 프로토타입 씬(`GameManager`)에 `GridView`,
-  `MatchController` 컴포넌트를 붙이고 Play 모드로 실제 동작을 확인했다. 그리드
-  라인(30개), 골대 마커(10개), 두 플레이어와 공 스프라이트가 정상 스폰됐고
-  콘솔 에러 없이 동작했다. 인스펙터에서 씬 오브젝트 참조를 직접 연결하는 게
-  mcp-unity 툴로는 안 돼서, `MatchController.Start()`에 같은 GameObject의
-  `GridView`를 자동으로 찾는 폴백을 추가해 우회했다.
+- mcp-unity를 통해 AI가 직접 `DotSoccer` 프로토타입 씬(`GameManager`)에
+  `GridView`, `MatchController` 컴포넌트를 붙이고 Play 모드로 실제 동작을
+  확인했다. 그리드 라인(30개), 골대 마커(10개), 두 플레이어와 공 스프라이트가
+  정상 스폰됐고 콘솔 에러 없이 동작했다. 인스펙터에서 씬 오브젝트 참조를
+  직접 연결하는 게 mcp-unity 툴로는 안 돼서, `MatchController.Start()`에 같은
+  GameObject의 `GridView`를 자동으로 찾는 폴백을 추가해 우회했다. 상태를
+  들여다보는 것뿐 아니라, AI가 씬에 컴포넌트를 붙이고 로직을 연결해서 실행까지
+  확인하는 것도 가능하다는 걸 확인한 사례였다.
 
-### 인프라/자동화
+### 인프라&자동화
+
+#### GitHub
 
 - 저장소를 GitHub([muggie1379/DotSoccer](https://github.com/muggie1379/DotSoccer),
   Public)에 연결했다. GitHub CLI(`gh`)를 설치하고 로그인한 뒤 `gh repo create
@@ -52,15 +59,11 @@
   기간 범위를 넘어선 값이었다. 10년(`New-TimeSpan -Days 3650`)으로 바꾸니
   정상 등록됐다.
 
-### Velog 자동화
+#### Velog
 
 - devlog.md를 그대로 미러링하는 "History" 게시글을 Workflow 시리즈에 새로
-  만들었다. 카테고리 구분 없이 시작했다가, 다루는 내용이 서버/클라이언트/
-  인프라/velog 자동화 네 갈래로 늘어나면서 날짜 아래 `###` 카테고리 소제목으로
-  나누는 방식으로 바꿨다 (지금 devlog.md도 그 구조를 그대로 따른다).
-- "Skill" 소개 게시글(Workflow 시리즈)에 최신 SKILL.md 전문을 반영하고, 버전
-  이력을 velog 게시글 수정만으로 남기기 어려워서 Skill 파일 자체를 GitHub
-  저장소로도 버전 관리하기 시작했다.
+  만들었다. "Skill" 소개 게시글(Workflow 시리즈)에는 최신 SKILL.md 전문을
+  반영했다.
 - Skill 이름을 `velog-weekly-devlog`에서 바꾸려고 시도하다가 한참 헤맸다. 더
   이상 "매주"도 아니고 devlog 발행 외에 History/Skill 소개 글 관리까지 범위가
   넓어져서 이름을 바꿔야 했는데, 처음 정한 `velog-for-claude`로 폴더명/
@@ -75,7 +78,9 @@
   되돌린 게 당연했다. 최종적으로 `velog-publisher`로 바꿔서 해결했고,
   skill-creator의 `package_skill.py`로 `.skill` 파일을 만들어 사용자가
   앱의 스킬 업로드 화면에서 직접 저장하는 방식으로 정식 재등록했다 (폴더/
-  manifest.json을 직접 고치는 건 반영이 안 된다는 것도 이번에 확인함).
+  manifest.json을 직접 고치는 건 반영이 안 된다는 것도 이번에 확인함). Skill
+  파일 자체도 GitHub([muggie1379/velog-publisher](https://github.com/muggie1379/velog-publisher))로
+  버전 관리하기 시작했다.
 - velog는 마크다운에 넣은 `<details><summary>...</summary></details>` 접이식
   토글을 에디터 미리보기에서는 그럴듯하게 보여주지만, 실제 발행된 페이지는 그
   태그들을 렌더링 시 제거해버린다는 것을 발견했다 (안의 텍스트만 평범한
@@ -84,8 +89,41 @@
 - velog 에디터의 이미지 업로드 툴바 버튼은 자동화가 다룰 수 없는 네이티브
   파일 선택 대화상자를 띄운다는 것도 확인했다. 대신 PowerShell로 로컬 이미지를
   클립보드에 올리고 에디터에 Ctrl+V로 붙여넣으면 velog가 알아서 업로드하고
-  마크다운 이미지 링크를 삽입해준다는 걸 확인해서, 이 방식으로 전환했다.
+  마크다운 이미지 링크를 삽입해준다는 걸 확인해서, 이 방식으로 전환했다. 다만
+  같은 방식(클립보드 텍스트 + Ctrl+V)을 긴 본문 전체를 갈아끼우는 데 쓰면
+  가끔 오래된 내용이 붙여넣기되는 문제가 있어서, 본문 전체 교체는 에디터의
+  CodeMirror API(`cm.setValue()`)를 JS로 직접 호출하는 쪽으로 바꿨다.
 - "블로그 개요"(Velog 시리즈) 게시글에 velog를 플랫폼으로 선택한 이유(마크다운을
   그대로 쓰는 블로그라 AI 자동 발행 파이프라인을 만들기 쉬움)를 추가했다.
+- devlog.md/History의 카테고리 체계를 확정했다: 서버·클라이언트·인프라&자동화·
+  요약 및 정리 네 개 고정 카테고리, 인프라&자동화와 요약 및 정리는 항상
+  `####` 세부 항목(GitHub/Velog, 요약/잔건/다음 계획)으로 나눈다. 또한 velog에
+  실제로 게시하기 전에 그날 요약·잔건·다음 계획을 사용자에게 보여주고
+  확인받는 단계를 작업 마무리 루틴에 명문화했다 -- "완전 자동 발행"은 이
+  확인 이후 게시 버튼을 누르는 단계부터를 뜻하는 것으로 정리했다.
+
+### 요약 및 정리
+
+#### 요약
+
+- DotSoccer 클라이언트: 기존 로컬 프로토타입을 서버 연동을 염두에 둔 구조로
+  새 Unity 프로젝트에 적용하고, mcp-unity로 AI가 직접 씬에 로직을 연결해서
+  Play 모드 동작까지 확인했다.
+- GitHub 연결 및 자동 커밋 스케줄러 설정을 마쳤다.
+- Velog 자동 발행 파이프라인(DevLog/History/Skill 소개/블로그 개요)을
+  정비하고, Skill 이름을 `velog-publisher`로 최종 확정해 정식 재설치했다.
+- History 카테고리 체계와 게시 직전 사용자 확인 절차를 SKILL.md에 명문화했다.
+
+#### 잔건
+
+- 없음 (오늘 계획한 작업은 모두 마무리함). 다만 WSL 미설치로 서버 빌드/실행
+  검증 자체는 이전부터 계속 보류 상태다.
+
+#### 다음 계획
+
+- 다음 세션에서 DotSoccer 서버 빌드(WSL 필요) 또는 클라이언트 추가 기능 중
+  하나를 골라 본격적인 개발(#2)로 넘어간다.
+- Unity 공식 Claude Code 플러그인은 프리뷰 딱지가 떨어지고 커뮤니티 피드백이
+  쌓이면 다시 검토한다.
 
 <!-- published 2026-09-13 to velog DevLog #1 -->
