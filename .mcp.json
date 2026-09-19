@@ -9,16 +9,6 @@
         "MCP_UNITY_SETTINGS_PATH": "E:/DotSoccer/client/ProjectSettings/McpUnitySettings.json",
         "MCP_UNITY_AUTH_TOKEN_PATH": "E:/DotSoccer/client/Library/McpUnity/bridge-token"
       }
-    },
-    "mcp-unity-kingwasme": {
-      "command": "node",
-      "args": [
-        "E:/KING WAS ME/Unity/My project/Library/PackageCache/com.gamelovers.mcp-unity@382a43a30f4d/Server~/build/index.js"
-      ],
-      "env": {
-        "MCP_UNITY_SETTINGS_PATH": "E:/KING WAS ME/Unity/My project/ProjectSettings/McpUnitySettings.json",
-        "MCP_UNITY_AUTH_TOKEN_PATH": "E:/KING WAS ME/Unity/My project/Library/McpUnity/bridge-token"
-      }
     }
   }
 }
